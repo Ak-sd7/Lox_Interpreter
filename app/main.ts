@@ -17,42 +17,44 @@ if (command !== "tokenize") {
 console.error("Logs from your program will appear here!");
 
 let tokens: [string, string, string][] = [];
-let line = 1;
-const identify = (character: string): string|null => {
+let line: number = 1,
+  hasError: boolean = false;
+const identify = (character: string): string | null => {
   switch (character) {
-    case "(":
-      return "LEFT_PAREN";
-      break;
-    case ")":
-      return "RIGHT_PAREN";
-      break;
-    case "{":
-      return "LEFT_BRACE";
-      break;
-    case "}":
-      return "RIGHT_BRACE";
-      break;
-    case ",":
-      return "COMMA";
-      break;
-    case "*":
-      return "STAR";
-      break;
-    case "+":
-      return "PLUS";
-      break;
-    case ".":
-      return "DOT";
-      break;
-    case ";":
-      return "SEMICOLON";
-      break;
-    case "-":
-      return "MINUS";
-      break;
-    default:
-      console.error(`[line ${line}] Error: Unexpected character: ${character}`);
-      process.exit(65);
+	case "(":
+	  return "LEFT_PAREN";
+	  break;
+	case ")":
+	  return "RIGHT_PAREN";
+	  break;
+	case "{":
+	  return "LEFT_BRACE";
+	  break;
+	case "}":
+	  return "RIGHT_BRACE";
+	  break;
+	case ",":
+	  return "COMMA";
+	  break;
+	case "*":
+	  return "STAR";
+	  break;
+	case "+":
+	  return "PLUS";
+	  break;
+	case ".":
+	  return "DOT";
+	  break;
+	case ";":
+	  return "SEMICOLON";
+	  break;
+	case "-":
+	  return "MINUS";
+	  break;
+	default:
+	  console.error(`[line ${line}] Error: Unexpected character: ${character}`);
+	  hasError = true;
+	  return null;
   }
 };
 
@@ -64,13 +66,20 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 
 for (let ch: number = 0; ch < fileContent.length; ch++) {
   const lexeme: string = fileContent[ch];
-  const token_type: string|null = identify(lexeme);
+  const token_type: string | null = identify(lexeme);
   const literal: string = "null";
-  if(token_type!==null)
-    tokens.push([token_type, lexeme, literal]);
+  if (token_type !== null) {
+	tokens.push([token_type, lexeme, literal]);
+  }
 }
+
 tokens.push(["EOF", "", "null"]);
+
 for (let token: number = 0; token < tokens.length; token++) {
   const value: [string, string, string] = tokens[token];
   console.log(`${value[0]} ${value[1]} ${value[2]}`);
+}
+
+if(hasError) {
+	process.exit(65);
 }
