@@ -32,6 +32,18 @@ const identify = (character: string): string => {
     case "}":
       return "RIGHT_BRACE";
       break;
+    case ",":
+      return "COMMA";
+      break;
+    case "*":
+      return "STAR";
+      break;
+    case "+":
+      return "PLUS";
+      break;
+    case ".":
+      return "DOT";
+      break;
   }
   return "";
 };
