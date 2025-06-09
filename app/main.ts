@@ -41,8 +41,8 @@ if (fileContent.length == 0) {
 }
 
 for (let ch: number = 0; ch < fileContent.length; ch++) {
-  const token_type: string = fileContent[ch];
-  const lexeme: string = identify(token_type);
+  const lexeme: string = fileContent[ch];
+  const token_type: string = identify(lexeme);
   const literal: string = "null";
   tokens.push([token_type, lexeme, literal]);
 }
