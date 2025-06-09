@@ -82,10 +82,10 @@ const identify = (character: string): [string, string] | null => {
     case "\r":
       return null;
       break;
-	case '\n':
-        line++;
-		return null;
-        break;
+    case "\n":
+      line++;
+      return null;
+      break;
     default:
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       hasError = true;
@@ -102,7 +102,11 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 for (; index < fileContent.length; index++) {
   const lexical_analysis = identify(fileContent[index]);
   if (hasComment) {
-    break;
+	if(fileContent[index]==="/n") {
+		hasComment = false;
+		line++;
+	}
+    continue;
   }
   if (lexical_analysis !== null) {
     const lexeme: string = lexical_analysis[1];
