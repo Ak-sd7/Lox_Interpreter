@@ -1,5 +1,4 @@
 import fs from "fs";
-console.log("hello");
 const args: string[] = process.argv.slice(2); // Skip the first two arguments (node path and script path)
 
 if (args.length < 2) {
@@ -37,6 +36,10 @@ const filename: string = args[1];
 
 const fileContent: string = fs.readFileSync(filename, "utf8");
 
+if (fileContent.length == 0) {
+  throw new Error("Scanner not implemented");
+}
+
 for (let ch: number = 0; ch < fileContent.length; ch++) {
   const token_type: string = fileContent[ch];
   const lexeme: string = identify(token_type);
@@ -49,8 +52,5 @@ for(let token:number=0; token<tokens.length; token++) {
   console.log(`${value[0]} ${value[1]} ${value[2]}`);
 }
 
-if (fileContent.length == 0) {
-  throw new Error("Scanner not implemented");
-} else {
-  console.log("EOF  null");
-}
+console.log("EOF  null");
+
