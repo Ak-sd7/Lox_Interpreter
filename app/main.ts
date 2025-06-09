@@ -44,6 +44,12 @@ const identify = (character: string): string => {
     case ".":
       return "DOT";
       break;
+    case ";":
+      return "SEMICOLON";
+      break;
+    case "-":
+      return "MINUS";
+      break;
   }
   return "";
 };
