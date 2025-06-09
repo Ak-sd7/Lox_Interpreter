@@ -26,6 +26,12 @@ const identify = (character: string): string => {
     case ")":
       return "RIGHT_PAREN";
       break;
+    case "{":
+      return "LEFT_BRACE";
+      break;
+    case "}":
+      return "RIGHT_BRACE";
+      break;
   }
   return "";
 };
