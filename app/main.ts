@@ -18,7 +18,7 @@ console.error("Logs from your program will appear here!");
 
 let tokens: [string, string, string][] = [];
 let line = 1;
-const identify = (character: string): string => {
+const identify = (character: string): string|null => {
   switch (character) {
     case "(":
       return "LEFT_PAREN";
@@ -53,9 +53,7 @@ const identify = (character: string): string => {
     default:
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       process.exit(65);
-      break;
   }
-  return "";
 };
 
 const filename: string = args[1];
@@ -66,9 +64,9 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 
 for (let ch: number = 0; ch < fileContent.length; ch++) {
   const lexeme: string = fileContent[ch];
-  const token_type: string = identify(lexeme);
+  const token_type: string|null = identify(lexeme);
   const literal: string = "null";
-  if(token_type[0]!=="[")
+  if(token_type!==null)
     tokens.push([token_type, lexeme, literal]);
 }
 tokens.push(["EOF", "", "null"]);
