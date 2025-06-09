@@ -18,58 +18,58 @@ console.error("Logs from your program will appear here!");
 
 let tokens: [string, string, string][] = [];
 let line: number = 1,
-  hasError: boolean = false, index ={ value: 0 };
+  hasError: boolean = false, index = 0;
 
-const checkNextChar = (nextChar:string, index:{value:number}):boolean=>{
-	if(index.value==fileContent.length-1 || fileContent[index.value+1]!=="=")
+const checkNextChar = (nextChar:string):boolean=>{
+	if(index==fileContent.length-1 || fileContent[index+1]!=="=")
 		return false;
-	index.value++;
+	index++;
 	return true;
 }
 
-const identify = (character: string, index:{value:number}): string | null => {
+const identify = (character: string): [string, string] | null => {
   switch (character) {
 	case "(":
-	  return "LEFT_PAREN";
+	  return ["LEFT_PAREN", "("];
 	  break;
 	case ")":
-	  return "RIGHT_PAREN";
+	  return ["RIGHT_PAREN", ")"];
 	  break;
 	case "{":
-	  return "LEFT_BRACE";
+	  return ["LEFT_BRACE", "{"];
 	  break;
 	case "}":
-	  return "RIGHT_BRACE";
+	  return ["RIGHT_BRACE", "}"];
 	  break;
 	case ",":
-	  return "COMMA";
+	  return ["COMMA", ","];
 	  break;
 	case "*":
-	  return "STAR";
+	  return ["STAR", "*"];
 	  break;
 	case "+":
-	  return "PLUS";
+	  return ["PLUS", "+"];
 	  break;
 	case ".":
-	  return "DOT";
+	  return ["DOT", "."];
 	  break;
 	case ";":
-	  return "SEMICOLON";
+	  return ["SEMICOLON", ";"];
 	  break;
 	case "-":
-	  return "MINUS";
+	  return ["MINUS", "-"];
 	  break;
 	case "=":
-		return checkNextChar("=", index)?"EQUAL_EQUAL":"EQUAL";
+		return checkNextChar("=")?["EQUAL_EQUAL", "=="]:["EQUAL", "="];
 		break;
 	case "<":
-		return checkNextChar("=", index)?"LESS_EQUAL":"LESS";
+		return checkNextChar("=")?["LESS_EQUAL", "<="]:["LESS", "<"];
 		break;
 	case ">":
-		return checkNextChar("=", index)?"GREATER_EQUAL":"GREATER";
+		return checkNextChar("=")?["GREATER_EQUAL", ">="]:["GREATER", ">"];
 		break;
 	case "!":
-		return checkNextChar("=", index)?"BANG_EQUAL":"BANG";
+		return checkNextChar("=")?["BANG_EQUAL", "!="]:["BANG", "!"];
 		break;
 	default:
 	  console.error(`[line ${line}] Error: Unexpected character: ${character}`);
@@ -84,16 +84,13 @@ const filename: string = args[1];
 
 const fileContent: string = fs.readFileSync(filename, "utf8");
 
-for (; index.value < fileContent.length; index.value++) {
-	let lexeme: string = fileContent[index.value];
-	if(checkNextChar("=", index)){
-		lexeme = lexeme + "=";
-		index.value++;
-	}
-	const token_type: string | null = identify(lexeme, index);
-	const literal: string = "null";
-	if (token_type !== null) {
-	tokens.push([token_type, lexeme, literal]);
+for (; index < fileContent.length; index++) {
+	const lexical_analysis = identify(fileContent[index]);
+	if (lexical_analysis !== null) {
+		const lexeme: string = lexical_analysis[1];
+		const token_type: string = lexical_analysis[0];
+		const literal: string = "null";
+		tokens.push([token_type, lexeme, literal]);
 	}
 }
 
