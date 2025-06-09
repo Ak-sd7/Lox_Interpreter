@@ -23,17 +23,11 @@ let line: number = 1,
   hasComment: boolean = false;
 
 const checkNextChar = (nextChar: string): boolean => {
-	if (index == fileContent.length - 1 || fileContent[index + 1] !== nextChar)
-		return false;
-	index++;
-	if(nextChar=="/")
-			hasComment = true;
-	if(nextChar=="|") {
-		while(fileContent[index]!==">") {
-			index++;
-		}
-	}
-	return true;
+  if (index == fileContent.length - 1 || fileContent[index + 1] !== nextChar)
+    return false;
+  index++;
+  if (nextChar == "/") hasComment = true;
+  return true;
 };
 
 const identify = (character: string): [string, string] | null => {
@@ -72,10 +66,8 @@ const identify = (character: string): [string, string] | null => {
       return checkNextChar("=") ? ["EQUAL_EQUAL", "=="] : ["EQUAL", "="];
       break;
     case "<":
-		if (checkNextChar("=")) return ["LESS_EQUAL", "<="];
-		if (checkNextChar("|")) return null;
-		return ["LESS", "<"];
-		break;
+      return checkNextChar("=") ? ["LESS_EQUAL", "<="] : ["LESS", "<"];
+      break;
     case ">":
       return checkNextChar("=") ? ["GREATER_EQUAL", ">="] : ["GREATER", ">"];
       break;
@@ -83,11 +75,13 @@ const identify = (character: string): [string, string] | null => {
       return checkNextChar("=") ? ["BANG_EQUAL", "!="] : ["BANG", "!"];
       break;
     case "/":
-      return checkNextChar("/") ? null: ["SLASH", "/"];
+      return checkNextChar("/") ? null : ["SLASH", "/"];
       break;
-	case " ":
-		return null;
-		break;
+    case " ": // Regular space
+    case "\t": // Tab character
+    case "\r": // Carriage return
+      return null;
+      break;
     default:
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       hasError = true;
@@ -103,8 +97,8 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 
 for (; index < fileContent.length; index++) {
   const lexical_analysis = identify(fileContent[index]);
-  if(hasComment) {
-		break;
+  if (hasComment) {
+    break;
   }
   if (lexical_analysis !== null) {
     const lexeme: string = lexical_analysis[1];
