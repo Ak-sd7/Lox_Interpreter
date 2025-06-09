@@ -52,6 +52,7 @@ const identify = (character: string): string => {
       break;
     default:
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
+      process.exit(65);
       break;
   }
   return "";
