@@ -1,5 +1,5 @@
 import fs from "fs";
-
+console.log("hello");
 const args: string[] = process.argv.slice(2); // Skip the first two arguments (node path and script path)
 
 if (args.length < 2) {
@@ -17,13 +17,39 @@ if (command !== "tokenize") {
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.error("Logs from your program will appear here!");
 
+let tokens: [string, string, string][] = [];
+
+const identify = (character: string): string => {
+  switch (character) {
+    case "(":
+      return "LEFT_PAREN";
+      break;
+    case ")":
+      return "RIGHT_PAREN";
+      break;
+  }
+  return "";
+};
+
 const filename: string = args[1];
 
 // Uncomment this block to pass the first stage
 
 const fileContent: string = fs.readFileSync(filename, "utf8");
 
-if (fileContent.length !== 0) {
+for (let ch: number = 0; ch < fileContent.length; ch++) {
+  const token_type: string = fileContent[ch];
+  const lexeme: string = identify(token_type);
+  const literal: string = "null";
+  tokens.push([token_type, lexeme, literal]);
+}
+
+for(let token:number=0; token<tokens.length; token++) {
+  const value: [string, string, string] = tokens[token];
+  console.log(`${value[0]} ${value[1]} ${value[2]}`);
+}
+
+if (fileContent.length == 0) {
   throw new Error("Scanner not implemented");
 } else {
   console.log("EOF  null");
