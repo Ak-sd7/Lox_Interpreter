@@ -93,7 +93,10 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 
 for (; index < fileContent.length; index++) {
   const lexical_analysis = identify(fileContent[index]);
-  if (lexical_analysis !== null && !hasComment) {
+  if(hasComment) {
+		break;
+  }
+  if (lexical_analysis !== null) {
     const lexeme: string = lexical_analysis[1];
     const token_type: string = lexical_analysis[0];
     const literal: string = "null";
