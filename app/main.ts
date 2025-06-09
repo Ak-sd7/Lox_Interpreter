@@ -23,12 +23,17 @@ let line: number = 1,
   hasComment: boolean = false;
 
 const checkNextChar = (nextChar: string): boolean => {
-  if (index == fileContent.length - 1 || fileContent[index + 1] !== nextChar)
-    return false;
-  index++;
-  if(nextChar=="/")
-		hasComment = true;
-  return true;
+	if (index == fileContent.length - 1 || fileContent[index + 1] !== nextChar)
+		return false;
+	index++;
+	if(nextChar=="/")
+			hasComment = true;
+	if(nextChar=="|") {
+		while(fileContent[index]==">") {
+			index++;
+		}
+	}
+	return true;
 };
 
 const identify = (character: string): [string, string] | null => {
@@ -67,8 +72,10 @@ const identify = (character: string): [string, string] | null => {
       return checkNextChar("=") ? ["EQUAL_EQUAL", "=="] : ["EQUAL", "="];
       break;
     case "<":
-      return checkNextChar("=") ? ["LESS_EQUAL", "<="] : ["LESS", "<"];
-      break;
+		if (checkNextChar("=")) return ["LESS_EQUAL", "<="];
+		if (checkNextChar("|")) return null;
+		return ["LESS", "<"];
+		break;
     case ">":
       return checkNextChar("=") ? ["GREATER_EQUAL", ">="] : ["GREATER", ">"];
       break;
