@@ -67,7 +67,8 @@ for (let ch: number = 0; ch < fileContent.length; ch++) {
   const lexeme: string = fileContent[ch];
   const token_type: string = identify(lexeme);
   const literal: string = "null";
-  tokens.push([token_type, lexeme, literal]);
+  if(token_type[0]!=="[")
+    tokens.push([token_type, lexeme, literal]);
 }
 tokens.push(["EOF", "", "null"]);
 for (let token: number = 0; token < tokens.length; token++) {
