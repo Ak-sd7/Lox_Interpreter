@@ -23,7 +23,7 @@ let line: number = 1,
   hasComment: boolean = false;
 
 const checkNextChar = (nextChar: string): boolean => {
-  if (index == fileContent.length - 1 || fileContent[index + 1] !== nextChar)
+  if (index >= fileContent.length - 1 || fileContent[index + 1] !== nextChar)
     return false;
   index++;
   if (nextChar == "/") hasComment = true;
@@ -77,11 +77,15 @@ const identify = (character: string): [string, string] | null => {
     case "/":
       return checkNextChar("/") ? null : ["SLASH", "/"];
       break;
-    case " ": // Regular space
-    case "\t": // Tab character
-    case "\r": // Carriage return
+    case " ":
+    case "\t":
+    case "\r":
       return null;
       break;
+	case '\n':
+        line++;
+		return null;
+        break;
     default:
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       hasError = true;
