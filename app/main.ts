@@ -88,6 +88,7 @@ for (; index.value < fileContent.length; index.value++) {
 	let lexeme: string = fileContent[index.value];
 	if(checkNextChar("=", index)){
 		lexeme = lexeme + "=";
+		index.value++;
 	}
 	const token_type: string | null = identify(lexeme, index);
 	const literal: string = "null";
