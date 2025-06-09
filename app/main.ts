@@ -17,7 +17,7 @@ if (command !== "tokenize") {
 console.error("Logs from your program will appear here!");
 
 let tokens: [string, string, string][] = [];
-
+let line = 1;
 const identify = (character: string): string => {
   switch (character) {
     case "(":
@@ -49,6 +49,9 @@ const identify = (character: string): string => {
       break;
     case "-":
       return "MINUS";
+      break;
+    default:
+      console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       break;
   }
   return "";
