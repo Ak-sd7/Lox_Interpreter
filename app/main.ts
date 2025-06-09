@@ -63,10 +63,13 @@ const identify = (character: string, index:{value:number}): string | null => {
 		return checkNextChar("=", index)?"EQUAL_EQUAL":"EQUAL";
 		break;
 	case "<":
-		return checkNextChar("=", index)?"LESS_EQUAL":"EQUAL";
+		return checkNextChar("=", index)?"LESS_EQUAL":"LESS";
 		break;
 	case ">":
-		return checkNextChar("=", index)?"GREATER_EQUAL":"EQUAL";
+		return checkNextChar("=", index)?"GREATER_EQUAL":"GREATER";
+		break;
+	case "!":
+		return checkNextChar("=", index)?"BANG_EQUAL":"BANG";
 		break;
 	default:
 	  console.error(`[line ${line}] Error: Unexpected character: ${character}`);
@@ -82,7 +85,10 @@ const filename: string = args[1];
 const fileContent: string = fs.readFileSync(filename, "utf8");
 
 for (; index.value < fileContent.length; index.value++) {
-	const lexeme: string = fileContent[index.value];
+	let lexeme: string = fileContent[index.value];
+	if(checkNextChar("=", index)){
+		lexeme = lexeme + "=";
+	}
 	const token_type: string | null = identify(lexeme, index);
 	const literal: string = "null";
 	if (token_type !== null) {
