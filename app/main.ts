@@ -26,7 +26,12 @@ const checkNextChar = (nextChar: string): boolean => {
   if (index >= fileContent.length - 1 || fileContent[index + 1] !== nextChar)
     return false;
   index++;
-  if (nextChar == "/") hasComment = true;
+  if (nextChar == "/") {
+	while (index < fileContent.length && fileContent[index] !== '\n') {
+      index++;
+    }
+    index--;
+  }
   return true;
 };
 
@@ -101,13 +106,6 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 
 for (; index < fileContent.length; index++) {
   const lexical_analysis = identify(fileContent[index]);
-  if (hasComment) {
-	if(fileContent[index]==="/n") {
-		hasComment = false;
-		line++;
-	}
-    continue;
-  }
   if (lexical_analysis !== null) {
     const lexeme: string = lexical_analysis[1];
     const token_type: string = lexical_analysis[0];
