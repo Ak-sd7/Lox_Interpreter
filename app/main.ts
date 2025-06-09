@@ -36,10 +36,6 @@ const filename: string = args[1];
 
 const fileContent: string = fs.readFileSync(filename, "utf8");
 
-if (fileContent.length == 0) {
-  throw new Error("Scanner not implemented");
-}
-
 for (let ch: number = 0; ch < fileContent.length; ch++) {
   const lexeme: string = fileContent[ch];
   const token_type: string = identify(lexeme);
