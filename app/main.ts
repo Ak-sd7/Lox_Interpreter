@@ -29,7 +29,7 @@ const checkNextChar = (nextChar: string): boolean => {
 	if(nextChar=="/")
 			hasComment = true;
 	if(nextChar=="|") {
-		while(fileContent[index]==">") {
+		while(fileContent[index]!==">") {
 			index++;
 		}
 	}
