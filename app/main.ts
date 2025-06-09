@@ -35,36 +35,52 @@ const identify = (character: string): [string, string] | null => {
   switch (character) {
     case "(":
       return ["LEFT_PAREN", "("];
+      break;
     case ")":
       return ["RIGHT_PAREN", ")"];
+      break;
     case "{":
       return ["LEFT_BRACE", "{"];
+      break;
     case "}":
       return ["RIGHT_BRACE", "}"];
+      break;
     case ",":
       return ["COMMA", ","];
+      break;
     case "*":
       return ["STAR", "*"];
+      break;
     case "+":
       return ["PLUS", "+"];
+      break;
     case ".":
       return ["DOT", "."];
+      break;
     case ";":
       return ["SEMICOLON", ";"];
+      break;
     case "-":
       return ["MINUS", "-"];
+      break;
     case "=":
       return checkNextChar("=") ? ["EQUAL_EQUAL", "=="] : ["EQUAL", "="];
+      break;
     case "<":
       return checkNextChar("=") ? ["LESS_EQUAL", "<="] : ["LESS", "<"];
+      break;
     case ">":
       return checkNextChar("=") ? ["GREATER_EQUAL", ">="] : ["GREATER", ">"];
+      break;
     case "!":
       return checkNextChar("=") ? ["BANG_EQUAL", "!="] : ["BANG", "!"];
+      break;
     case "/":
       return checkNextChar("/") ? null: ["SLASH", "/"];
+      break;
 	case " ":
 		return null;
+		break;
     default:
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       hasError = true;
