@@ -42,11 +42,9 @@ for (let ch: number = 0; ch < fileContent.length; ch++) {
   const literal: string = "null";
   tokens.push([token_type, lexeme, literal]);
 }
-
+tokens.push(["EOF", "", "null"]);
 for(let token:number=0; token<tokens.length; token++) {
   const value: [string, string, string] = tokens[token];
   console.log(`${value[0]} ${value[1]} ${value[2]}`);
 }
-
-console.log("EOF  null");
 
