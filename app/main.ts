@@ -137,14 +137,17 @@ const identify = (
           }
         }
         const numberValue = fileContent.substring(start, index);
-        // Create literal value by removing trailing zeros but keeping at least one decimal place if there was a decimal
-        let literalValue = numberValue + ".0";
+    
+        let literalValue = numberValue;
         if (hasDecimal) {
           // Remove trailing zeros from the decimal part
           literalValue = literalValue.replace(/(\.\d*?)0+$/, "$1");
           if (literalValue.endsWith(".")) {
             literalValue += "0";
           }
+        } else {
+          // For integers, add .0
+          literalValue += ".0";
         }
         index--;
         return ["NUMBER", numberValue, literalValue];
