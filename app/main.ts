@@ -128,7 +128,7 @@ const identify = (
           index < fileContent.length &&
           fileContent[index] == "." &&
           index + 1 < fileContent.length &&
-          isDigit(fileContent[index])
+          isDigit(fileContent[index+1])
         ) {
           index++;
           hasDecimal = true;
