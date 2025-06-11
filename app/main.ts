@@ -19,25 +19,31 @@ console.error("Logs from your program will appear here!");
 let tokens: [string, string, string][] = [];
 let line: number = 1,
   hasError: boolean = false,
-  index = 0, start:number = 0, end:number = 0;
+  index = 0,
+  start: number = 0,
+  end: number = 0;
 
 const checkNextChar = (nextChar: string): boolean => {
   if (index >= fileContent.length - 1 || fileContent[index + 1] !== nextChar)
     return false;
   index++;
   if (nextChar == "/") {
-    while (index < fileContent.length && fileContent[index] !== '\n') {
-        index++;
-      }
-      index--;
+    while (index < fileContent.length && fileContent[index] !== "\n") {
+      index++;
+    }
+    index--;
   }
-  if(nextChar == '"') {
-    
+  if (nextChar == '"') {
   }
   return true;
 };
-
-const identify = (character: string): [string, string, string] | [string, string ] | null => {
+const isDigit = (character: string): boolean => {
+  if (character >= "0" && character <= "9") return true;
+  return false;
+};
+const identify = (
+  character: string
+): [string, string, string] | [string, string] | null => {
   switch (character) {
     case "(":
       return ["LEFT_PAREN", "("];
@@ -87,18 +93,17 @@ const identify = (character: string): [string, string, string] | [string, string
     case '"':
       start = index;
       index++;
-      while(index<fileContent.length && fileContent[index]!=='"') {
-        if(fileContent[index]=="\n")
-          line++;
+      while (index < fileContent.length && fileContent[index] !== '"') {
+        if (fileContent[index] == "\n") line++;
         index++;
       }
       end = index;
-      if(index>=fileContent.length) {
+      if (index >= fileContent.length) {
         console.error(`[line ${line}] Error: Unterminated string.`);
         hasError = true;
         return null;
       }
-      const subString:string = fileContent.substring(start+1, index);
+      const subString: string = fileContent.substring(start + 1, index);
       return ["STRING", `"${subString}"`, subString];
       break;
     case " ":
@@ -111,6 +116,39 @@ const identify = (character: string): [string, string, string] | [string, string
       return null;
       break;
     default:
+      if (isDigit(character)) {
+        let hasDecimal: boolean = false;
+        start = index;
+
+        while (index < fileContent.length && isDigit(fileContent[index])) {
+          index++;
+        }
+
+        if (
+          index < fileContent.length &&
+          fileContent[index] == "." &&
+          index + 1 < fileContent.length &&
+          isDigit(fileContent[index])
+        ) {
+          index++;
+          hasDecimal = true;
+          while (index < fileContent.length && isDigit(fileContent[index])) {
+            index++;
+          }
+        }
+        const numberValue = fileContent.substring(start, end);
+        // Create literal value by removing trailing zeros but keeping at least one decimal place if there was a decimal
+        let literalValue = numberValue;
+        if (hasDecimal) {
+          // Remove trailing zeros from the decimal part
+          literalValue = literalValue.replace(/(\.\d*?)0+$/, "$1");
+          if (literalValue.endsWith(".")) {
+            literalValue += "0";
+          }
+        }
+        index--;
+        return ["NUMBER", numberValue, literalValue];
+      }
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       hasError = true;
       return null;
@@ -129,7 +167,7 @@ for (; index < fileContent.length; index++) {
     const lexeme: string = lexical_analysis[1];
     const token_type: string = lexical_analysis[0];
     let literal: string = "null";
-    lexical_analysis.length==3 ? literal = lexical_analysis[2]: "null";
+    lexical_analysis.length == 3 ? (literal = lexical_analysis[2]) : "null";
     tokens.push([token_type, lexeme, literal]);
   }
 }
