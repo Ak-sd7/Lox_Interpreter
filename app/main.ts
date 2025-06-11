@@ -19,23 +19,25 @@ console.error("Logs from your program will appear here!");
 let tokens: [string, string, string][] = [];
 let line: number = 1,
   hasError: boolean = false,
-  index = 0,
-  hasComment: boolean = false;
+  index = 0, start:number = 0, end:number = 0;
 
 const checkNextChar = (nextChar: string): boolean => {
   if (index >= fileContent.length - 1 || fileContent[index + 1] !== nextChar)
     return false;
   index++;
   if (nextChar == "/") {
-	while (index < fileContent.length && fileContent[index] !== '\n') {
-      index++;
-    }
-    index--;
+    while (index < fileContent.length && fileContent[index] !== '\n') {
+        index++;
+      }
+      index--;
+  }
+  if(nextChar == '"') {
+    
   }
   return true;
 };
 
-const identify = (character: string): [string, string] | null => {
+const identify = (character: string): [string, string, string] | [string, string ] | null => {
   switch (character) {
     case "(":
       return ["LEFT_PAREN", "("];
@@ -82,6 +84,23 @@ const identify = (character: string): [string, string] | null => {
     case "/":
       return checkNextChar("/") ? null : ["SLASH", "/"];
       break;
+    case '"':
+      start = index;
+      index++;
+      while(index<fileContent.length && fileContent[index]!=='"') {
+        if(fileContent[index]=="\n")
+          line++;
+        index++;
+      }
+      end = index;
+      if(index>=fileContent.length) {
+        console.error(`[line ${line}] Error: Unterminated string.`);
+        hasError = true;
+        return null;
+      }
+      const subString:string = fileContent.substring(start+1, index);
+      return ["STRING", `"${subString}"`, subString];
+      break;
     case " ":
     case "\t":
     case "\r":
@@ -109,7 +128,8 @@ for (; index < fileContent.length; index++) {
   if (lexical_analysis !== null) {
     const lexeme: string = lexical_analysis[1];
     const token_type: string = lexical_analysis[0];
-    const literal: string = "null";
+    let literal: string = "null";
+    lexical_analysis.length==3 ? literal = lexical_analysis[2]: "null";
     tokens.push([token_type, lexeme, literal]);
   }
 }
