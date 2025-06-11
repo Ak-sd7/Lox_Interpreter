@@ -136,7 +136,7 @@ const identify = (
             index++;
           }
         }
-        const numberValue = fileContent.substring(start, end);
+        const numberValue = fileContent.substring(start, index);
         // Create literal value by removing trailing zeros but keeping at least one decimal place if there was a decimal
         let literalValue = numberValue;
         if (hasDecimal) {
