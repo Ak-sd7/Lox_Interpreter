@@ -41,6 +41,9 @@ const isDigit = (character: string): boolean => {
   if (character >= "0" && character <= "9") return true;
   return false;
 };
+const isAlpha = (character: string): boolean => {
+  return character >= "a" && character <= "z";
+};
 const identify = (
   character: string
 ): [string, string, string] | [string, string] | null => {
@@ -128,7 +131,7 @@ const identify = (
           index < fileContent.length &&
           fileContent[index] == "." &&
           index + 1 < fileContent.length &&
-          isDigit(fileContent[index+1])
+          isDigit(fileContent[index + 1])
         ) {
           index++;
           hasDecimal = true;
@@ -137,7 +140,7 @@ const identify = (
           }
         }
         const numberValue = fileContent.substring(start, index);
-    
+
         let literalValue = numberValue;
         if (hasDecimal) {
           // Remove trailing zeros from the decimal part
@@ -152,6 +155,15 @@ const identify = (
         index--;
         return ["NUMBER", numberValue, literalValue];
       }
+	  if(isAlpha(character)) {
+		start = index;
+		while(index<fileContent.length && isAlpha(fileContent[index])) {
+			index++;
+		}
+		const identifierValue: string = fileContent.substring(start, index);
+		index--;
+		return ["IDENTIFIER", identifierValue];
+	  }
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       hasError = true;
       return null;
