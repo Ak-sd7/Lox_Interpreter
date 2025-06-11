@@ -42,7 +42,12 @@ const isDigit = (character: string): boolean => {
   return false;
 };
 const isAlpha = (character: string): boolean => {
-  return character >= "a" && character <= "z";
+  return (character >= "a" && character <= "z") || 
+         (character >= "A" && character <= "Z") || 
+         character === "_";
+};
+const isAlphaNumeric = (character: string): boolean => {
+  return isAlpha(character) || isDigit(character);
 };
 const identify = (
   character: string
@@ -157,7 +162,7 @@ const identify = (
       }
 	  if(isAlpha(character)) {
 		start = index;
-		while(index<fileContent.length && isAlpha(fileContent[index])) {
+		while(index<fileContent.length && isAlphaNumeric(fileContent[index])) {
 			index++;
 		}
 		const identifierValue: string = fileContent.substring(start, index);
