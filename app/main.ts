@@ -37,18 +37,43 @@ const checkNextChar = (nextChar: string): boolean => {
   }
   return true;
 };
+
 const isDigit = (character: string): boolean => {
   if (character >= "0" && character <= "9") return true;
   return false;
 };
+
 const isAlpha = (character: string): boolean => {
-  return (character >= "a" && character <= "z") || 
-         (character >= "A" && character <= "Z") || 
-         character === "_";
+  return (
+    (character >= "a" && character <= "z") ||
+    (character >= "A" && character <= "Z") ||
+    character === "_"
+  );
 };
+
 const isAlphaNumeric = (character: string): boolean => {
   return isAlpha(character) || isDigit(character);
 };
+
+let keywords = new Map<string, string>([
+  ["and", "AND"],
+  ["class", "CLASS"],
+  ["else", "ELSE"],
+  ["false", "FALSE"],
+  ["for", "FOR"],
+  ["fun", "FUN"],
+  ["if", "IF"],
+  ["nil", "NIL"],
+  ["or", "OR"],
+  ["print", "PRINT"],
+  ["return", "RETURN"],
+  ["super", "SUPER"],
+  ["this", "THIS"],
+  ["true", "TRUE"],
+  ["var", "VAR"],
+  ["while", "WHILE"],
+]);
+
 const identify = (
   character: string
 ): [string, string, string] | [string, string] | null => {
@@ -160,15 +185,22 @@ const identify = (
         index--;
         return ["NUMBER", numberValue, literalValue];
       }
-	  if(isAlpha(character)) {
-		start = index;
-		while(index<fileContent.length && isAlphaNumeric(fileContent[index])) {
-			index++;
-		}
-		const identifierValue: string = fileContent.substring(start, index);
-		index--;
-		return ["IDENTIFIER", identifierValue];
-	  }
+      if (isAlpha(character)) {
+        start = index;
+        while (
+          index < fileContent.length &&
+          isAlphaNumeric(fileContent[index])
+        ) {
+          index++;
+        }
+        const identifierValue: string = fileContent.substring(start, index);
+        let identifier: string | undefined;
+        if (keywords.has(identifierValue))
+          identifier = keywords.get(identifierValue);
+        if (identifier === undefined) identifier = "IDENTIFIER";
+        index--;
+        return [identifier, identifierValue];
+      }
       console.error(`[line ${line}] Error: Unexpected character: ${character}`);
       hasError = true;
       return null;
