@@ -7,7 +7,6 @@ export class Tokenizer {
   private hasError: boolean = false;
   private index: number = 0;
   private start: number = 0;
-  private end: number = 0;
 
   private keywords = new Map<string, string>([
     ["and", "AND"],
@@ -114,7 +113,6 @@ export class Tokenizer {
           if (this.fileContent[this.index] == "\n") this.line++;
           this.index++;
         }
-        this.end = this.index;
         if (this.index >= this.fileContent.length) {
           console.error(`[line ${this.line}] Error: Unterminated string.`);
           this.hasError = true;
