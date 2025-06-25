@@ -24,7 +24,7 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 
 const tokenizer = new Tokenizer(fileContent);
 const tokens = tokenizer.tokenize();
-console.log(tokens);
+// console.log(tokens);
 if(command==="tokenize") {
   tokenizer.printTokens();
 
