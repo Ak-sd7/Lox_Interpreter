@@ -45,7 +45,7 @@ if(command==="tokenize") {
   // if(expression===null)
   //   process.exit(65);
 
-  const astStruct = new Ast();
+  const astStruct = new Ast().print;
   console.log(astStruct);
 }
 
