@@ -29,7 +29,7 @@ export class Ast implements Visitor<string>{
 	}
 
 	visitGroupingExp(exp: Grouping): string {
-		return "";
+		return this.generate("group", exp.operator);
 	}
 
 	visitUnaryExp(exp: Unary): string {

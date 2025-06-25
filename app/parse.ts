@@ -88,6 +88,11 @@ export class Parser {
 		if(this.match("STRING"))
 			return new Literal(this.previous()[2]);
 
+		if(this.match("LEFT_PAREN")) {
+			const exp = this.expression();
+			this.consume("RIGHT_PAREN", "error");
+			return new Grouping(exp);
+		}
 		throw new Error("error");
 	}
 
@@ -125,4 +130,9 @@ export class Parser {
 		return this.tokens[this.current];
 	}
 
+	private consume(type: string, err: string) {
+		if(this.check(type))
+			return this.advance();
+		throw new Error(err);
+	}
 }
