@@ -26,10 +26,7 @@ const tokenizer = new Tokenizer(fileContent);
 const tokens = tokenizer.tokenize();
 console.log(tokens);
 if(command==="tokenize") {
-  for (let token: number = 0; token < tokens.length; token++) {
-    const value = tokens[token];
-    console.log(`${value[0]} ${value[1]} ${value[2]}`);
-  }
+  tokenizer.printTokens();
 
   if (tokenizer.hasErrors()) {
     process.exit(65);
@@ -42,8 +39,9 @@ if(command==="tokenize") {
   const parser = new Parser(tokens);
   const expression = parser.parse();
 
-  if(expression===null)
+  if(expression===null) {
     process.exit(65);
+  }
 
   const astStruct = new Ast();
   console.log(astStruct.print(expression));

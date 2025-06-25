@@ -93,9 +93,10 @@ export class Parser {
 
 	private match(...types: string[]): boolean {
 		for(const type of types) {
-			if(this.check(type)) 
+			if(this.check(type)) {
 				this.advance();
 				return true;
+			}
 		}
 		return false;
 	}
