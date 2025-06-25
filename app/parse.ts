@@ -76,10 +76,19 @@ export class Parser {
 		if(this.match("FALSE"))
 			return new Literal(false);
 
-		if(this.match("FALSE"))
+		if(this.match("TRUE"))
 			return new Literal(true);
 
-		
+		if(this.match("NIL"))
+			return new Literal(null);
+
+		if(this.match("NUMBER"))
+				return new Literal(parseFloat(this.previous()[2]));
+
+		if(this.match("STRING"))
+			return new Literal(this.previous()[2]);
+
+		throw new Error("error");
 	}
 
 	private match(...types: string[]): boolean {
