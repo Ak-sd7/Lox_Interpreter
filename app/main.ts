@@ -42,8 +42,8 @@ if(command==="tokenize") {
   const parser = new Parser(tokens);
   const expression = parser.parse();
 
-  if(expression===null)
-    process.exit(65);
+  // if(expression===null)
+  //   process.exit(65);
 
   const astStruct = new Ast();
   console.log(astStruct);
