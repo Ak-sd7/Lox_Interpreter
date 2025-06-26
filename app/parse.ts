@@ -1,5 +1,4 @@
 import type { Token } from "./types";
-import type { Visitor } from "./visitor";
 import { Binary, Unary, Grouping, Exp, Literal} from "./visitor";
 
 export class Parser {

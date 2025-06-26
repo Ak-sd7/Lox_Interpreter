@@ -1,21 +1,21 @@
 import { Exp, Binary, Unary, Literal, Grouping } from "./visitor";
 import type { Visitor } from "./visitor";
 /*
-BinaryExpr {
+BinaryExp {
   left: Literal { value: 5 },    // ← This is an Exp
-  operator: ["+", "+", "+"],
+  operator: ["PLUS", "+", "+"],
   right: Literal { value: 3 }    // ← This is also an Exp
 }
 (5 + 3) * 2
-visitBinaryExpr(*) 
-  → parenthesize("*", ...)
-    → leftBinaryExpr.accept(this)
-      → visitBinaryExpr(+)
-        → parenthesize("+", ...)
-          → LiteralExpr(5).accept(this) → "5.0"
-          → LiteralExpr(3).accept(this) → "3.0"
+visitBinaryExp(*) 
+  → generate("*", ...)
+    → leftBinaryExp.accept(this)
+      → visitBinaryExp(+)
+        → generate("+", ...)
+          → LiteralExp(5).accept(this) → "5.0"
+          → LiteralExp(3).accept(this) → "3.0"
         → returns "(+ 5.0 3.0)"
-    → rightLiteralExpr.accept(this) → "2.0"
+    → rightLiteralExp.accept(this) → "2.0"
   → returns "(* (+ 5.0 3.0) 2.0)"
 */
 
