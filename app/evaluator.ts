@@ -1,7 +1,7 @@
 import type { Exp, Literal, Binary, Grouping, Unary} from "./visitor";
 import type { Visitor } from "./visitor";
 
-export class Evaluator implements Visitor<string> {
+export class Evaluator implements Visitor<any> {
 	evaluate(exp: Exp):any {
 		return exp.accept(this);
 	}
@@ -88,7 +88,9 @@ export class Evaluator implements Visitor<string> {
 				return !this.isTrue(right);
 			case "-":
 				this.checkNumber(operator, right);
-				return 
+				return -right;
+			default:
+				throw new Error(`Unknown unary operator: ${operator}`);
 		}
 	}
 
