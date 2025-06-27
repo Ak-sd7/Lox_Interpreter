@@ -89,7 +89,7 @@ export class Evaluator implements Visitor<any> {
 
 	private checkNumber(operator: string, operand: any): void {
 		if(typeof operand != "number")
-			throw new Error(`Operand must be a number for '${operator}' operator`);
+			throw new Error(`Operand must be a number`);
 	}
 
 	private isTrue(operand: any): boolean {
@@ -112,7 +112,7 @@ export class Evaluator implements Visitor<any> {
 
 	private checkType(operator: string, left: any, right:any): void {
 		if(typeof left !== "number" || typeof right !== "number")
-			throw new Error(`Operands must be numbers for '${operator}' operator`);
+			throw new Error(`Operands must be numbers`);
 	}
 
 	private checkEqual(left: any, right: any): boolean {
