@@ -16,10 +16,10 @@ export class Evaluator implements Visitor<any> {
 				if(typeof left === "number" && typeof right === 'number'){
 					return left + right;
 				}
-				if(typeof left === "string" || typeof right === "string") {
-					return this.convert(left) + this.convert(right);
+				if(typeof left === "string" && typeof right === "string") {
+					return left + right;
 				}
-				throw new RuntimeError(`Invalid operands for '+': ${typeof left} and ${typeof right}`);
+				throw new RuntimeError(`Operands must be two numbers or two strings.`);
 
 			case "-":
 				this.checkType(operator, right, left);
@@ -99,16 +99,6 @@ export class Evaluator implements Visitor<any> {
 		if(typeof operand === "boolean")
 			return operand;
 		return true;
-	}
-
-	private convert(operand: any): string {
-		if (operand === null) return "nil";
-		if (typeof operand === "boolean") return operand.toString();
-		if (typeof operand === "number") {
-			const numStr = operand.toString();
-			return numStr.includes('.') ? numStr : numStr + '.0';
-		}
-		return operand.toString();
 	}
 
 	private checkType(operator: string, left: any, right:any): void {
