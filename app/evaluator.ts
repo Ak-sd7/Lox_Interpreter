@@ -66,7 +66,17 @@ export class Evaluator implements Visitor<string> {
 	}
 
 	visitLiteralExp(exp: Literal): string {
-		return exp.operand;
+		if(typeof exp.operand === "boolean")
+			return exp.operand.toString();
+
+		if(exp.operand === null)
+			return "nil";
+
+		if(typeof exp.operand === "number") {
+			const numStr = exp.operand.toString();
+      		return numStr.includes('.') ? numStr : numStr + '.0';
+		}
+		return exp.operand.toString();
 	}
 
 	visitUnaryExp(exp: Unary): any {
