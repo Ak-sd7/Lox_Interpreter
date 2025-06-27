@@ -3,6 +3,7 @@ import { Tokenizer } from "./tokenize";
 import { Parser } from "./parse";
 import { Ast } from "./ast";
 import { Evaluator } from "./evaluator";
+import { RuntimeError } from "./utils";
 const args: string[] = process.argv.slice(2); // Skip the first two arguments (node path and script path)
 
 if (args.length < 2) {
@@ -49,7 +50,17 @@ if(command === "tokenize") {
   if(expression===null) {
     process.exit(65);
   }
-  const evaluator = new Evaluator();
-  console.log(evaluator.evaluate(expression));
+  try {
+    const evaluator = new Evaluator();
+    console.log(evaluator.evaluate(expression));
+  } catch (error) {
+    if (error instanceof RuntimeError) {
+        console.error(error.message);
+        process.exit(70);
+    } else {
+        // Handle other errors differently
+        throw error;
+    }
+  }
 }
 

@@ -1,5 +1,6 @@
 import type { Exp, Literal, Binary, Grouping, Unary} from "./visitor";
 import type { Visitor } from "./visitor";
+import { RuntimeError } from "./utils";
 
 export class Evaluator implements Visitor<any> {
 	evaluate(exp: Exp):any {
@@ -18,7 +19,7 @@ export class Evaluator implements Visitor<any> {
 				if(typeof left === "string" || typeof right === "string") {
 					return this.convert(left) + this.convert(right);
 				}
-				throw new Error(`Invalid operands for '+': ${typeof left} and ${typeof right}`);
+				throw new RuntimeError(`Invalid operands for '+': ${typeof left} and ${typeof right}`);
 
 			case "-":
 				this.checkType(operator, right, left);
@@ -31,7 +32,7 @@ export class Evaluator implements Visitor<any> {
 			case "/":
 				this.checkType(operator, left, right);
 				if(right === 0)
-					throw new Error("Division By Zero");
+					throw new RuntimeError("Division By Zero");
 					return left / right;
 				
 			case ">":
@@ -57,7 +58,7 @@ export class Evaluator implements Visitor<any> {
 				return !this.checkEqual(left, right);
 			
 			default:
-				throw new Error(`Unknown binary operator: ${operator}`);
+				throw new RuntimeError(`Unknown binary operator: ${operator}`);
 		}
 	}
 
@@ -83,13 +84,13 @@ export class Evaluator implements Visitor<any> {
 				this.checkNumber(operator, right);
 				return -right;
 			default:
-				throw new Error(`Unknown unary operator: ${operator}`);
+				throw new RuntimeError(`Unknown unary operator: ${operator}`);
 		}
 	}
 
 	private checkNumber(operator: string, operand: any): void {
 		if(typeof operand != "number")
-			throw new Error(`Operand must be a number`);
+			throw new RuntimeError(`Operand must be a number`);
 	}
 
 	private isTrue(operand: any): boolean {
@@ -112,7 +113,7 @@ export class Evaluator implements Visitor<any> {
 
 	private checkType(operator: string, left: any, right:any): void {
 		if(typeof left !== "number" || typeof right !== "number")
-			throw new Error(`Operands must be numbers`);
+			throw new RuntimeError(`Operands must be numbers`);
 	}
 
 	private checkEqual(left: any, right: any): boolean {
