@@ -74,7 +74,7 @@ export class Evaluator implements Visitor<string> {
 
 		if(typeof exp.operand === "number") {
 			const numStr = exp.operand.toString();
-      		return numStr.includes('.') ? numStr : numStr + '.0';
+      		return numStr;
 		}
 		return exp.operand.toString();
 	}
