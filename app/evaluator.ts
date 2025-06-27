@@ -65,18 +65,11 @@ export class Evaluator implements Visitor<any> {
 		return this.evaluate(exp.operator);
 	}
 
-	visitLiteralExp(exp: Literal): string {
-		if(typeof exp.operand === "boolean")
-			return exp.operand.toString();
-
-		if(exp.operand === null)
+	visitLiteralExp(exp: Literal): any {
+		if (exp.operand === null) {
 			return "nil";
-
-		if(typeof exp.operand === "number") {
-			const numStr = exp.operand.toString();
-      		return numStr;
 		}
-		return exp.operand.toString();
+		return exp.operand;
 	}
 
 	visitUnaryExp(exp: Unary): any {
