@@ -75,9 +75,13 @@ export class Evaluator implements Visitor<any> {
 	visitUnaryExp(exp: Unary): any {
 		const right = this.evaluate(exp.right);
 		const operator: string = exp.operator[1];
-
+		// Debug logging
+		console.log(`Unary operator: ${operator}, right value: ${right}, type: ${typeof right}`);
+		console.log(`isTrue(${right}) = ${this.isTrue(right)}`); 
 		switch(operator) {
 			case "!":
+				const result = !this.isTrue(right);
+				console.log(`!isTrue(${right}) = ${result}`);
 				return !this.isTrue(right);
 			case "-":
 				this.checkNumber(operator, right);
