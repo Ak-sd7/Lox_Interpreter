@@ -2,6 +2,7 @@ import fs from "fs";
 import { Tokenizer } from "./tokenize";
 import { Parser } from "./parse";
 import { Ast } from "./ast";
+import { Evaluator } from "./evaluator";
 const args: string[] = process.argv.slice(2); // Skip the first two arguments (node path and script path)
 
 if (args.length < 2) {
@@ -25,25 +26,30 @@ const fileContent: string = fs.readFileSync(filename, "utf8");
 const tokenizer = new Tokenizer(fileContent);
 const tokens = tokenizer.tokenize();
 // console.log(tokens);
-if(command==="tokenize") {
+const parser = new Parser(tokens);
+const expression = parser.parse();
+
+if(command === "tokenize") {
   tokenizer.printTokens();
 
   if (tokenizer.hasErrors()) {
     process.exit(65);
   }
-}else if(command==="parse") {
+}else if(command ==="parse") {
   if (tokenizer.hasErrors()) {
     process.exit(65);
   }
-
-  const parser = new Parser(tokens);
-  const expression = parser.parse();
-
   if(expression===null) {
     process.exit(65);
   }
 
   const astStruct = new Ast();
   console.log(astStruct.print(expression));
+}else if(command === "evaluate") {
+  if(expression===null) {
+    process.exit(65);
+  }
+  const evaluator = new Evaluator();
+  console.log(evaluator.evaluate(expression));
 }
 
