@@ -1,15 +1,17 @@
 {
-  "name": "@codecrafters/interpreter",
-  "description": "Build your own Interpreter challenge, from CodeCrafters",
+  "name": "lox-interpreter",
+  "description": "Lox interpreter implementation",
   "type": "module",
   "scripts": {
-    "dev": "bun run app/main.ts"
+    "dev": "bun run app/main.ts",
+    "start": "bun run app/main.ts",
+    "test": "bun run test-runner.ts",
+    "tokenize": "bun run app/main.ts tokenize",
+    "parse": "bun run app/main.ts parse",
+    "evaluate": "bun run app/main.ts evaluate"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/node": "^22.15.29"
-  },
-  "dependencies": {
-    "@codecrafters/interpreter": "file:"
   }
 }

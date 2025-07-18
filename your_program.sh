@@ -1,15 +1,14 @@
 #!/bin/sh
-#
-# Use this script to run your program LOCALLY.
-#
-# Note: Changing this script WILL NOT affect how CodeCrafters runs your program.
-#
-# Learn more: https://codecrafters.io/program-interface
 
 set -e # Exit early if any commands fail
 
-# Copied from .codecrafters/run.sh
-#
-# - Edit this to change how your program runs locally
-# - Edit .codecrafters/run.sh to change how your program runs remotely
+# Check if we have enough arguments
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <command> <filename>"
+    echo "Commands: tokenize, parse, evaluate"
+    echo "Example: $0 evaluate test1.lox"
+    exit 1
+fi
+
+# Run the interpreter
 exec bun run "$(dirname "$0")/app/main.ts" "$@"
