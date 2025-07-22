@@ -18,8 +18,7 @@ if (command !== "tokenize" && command !== "parse" && command !== "evaluate") {
   process.exit(1);
 }
 
-// You can use print statements as follows for debugging, they'll be visible when running tests.
-console.error("Logs from your program will appear here!");
+console.error("Logs");
 
 const filename: string = args[1];
 const fileContent: string = fs.readFileSync(filename, "utf8");
